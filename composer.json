@@ -1,0 +1,16 @@
+{
+    "name": "jmmok/projet_php",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "José Mokeni"
+        }
+    ],
+    "require": {
+      "ext-pdo": "*"
+    }
+}
