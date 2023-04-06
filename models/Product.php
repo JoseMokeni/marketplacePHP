@@ -13,7 +13,9 @@ class Product
     private ?float $price;
     private ?string $status;
     private ?int $category_id;
-    private ?string $image;
+    private ?int $user_id;
+    public ?string $image;
+
 
     public function __construct(
         int $id=0,
@@ -22,6 +24,7 @@ class Product
         float $price = 0,
         string $status = "",
         int $category_id = 0,
+        int $user_id = 0,
         string $image = ""
     ) {
         $this->id = $id;
@@ -30,6 +33,7 @@ class Product
         $this->price = $price;
         $this->status = $status;
         $this->category_id = $category_id;
+        $this->user_id = $user_id;
         $this->image = $image;
     }
 
@@ -62,9 +66,56 @@ class Product
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getAllByStatus($status) : array
+    {
+        $sql = "SELECT * FROM products WHERE status = '$status'";
+        Database::connect();
+        $statement = Database::$pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function checkProductOwner($userId, $productId) : bool
+    {
+//        todo: add to database product owner
+        $sql = "SELECT * FROM products WHERE id = $productId AND user_id = $userId";
+        Database::connect();
+        $statement = Database::$pdo->prepare($sql);
+        $statement->execute();
+        return $statement->rowCount() > 0;
+    }
+
+    public static function getAllCategoriesIdAndNames() : array
+    {
+        $sql = "SELECT id, name FROM categories";
+        Database::connect();
+        $statement = Database::$pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllByUserId($userId) : array
+    {
+        $sql = "SELECT * FROM products WHERE user_id = $userId";
+        Database::connect();
+        $statement = Database::$pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getCategoryName($category_id)
+    {
+        $sql = "SELECT name FROM categories WHERE id = $category_id";
+        Database::connect();
+        $statement = Database::$pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC)['name'];
+    }
+
     public function create() : bool
     {
-        $sql = "INSERT INTO products (name, description, price, status, category_id, image) VALUES (?, ?, ?, ?, ?, ?)";
+
+        $sql = "INSERT INTO products (name, description, price, status, category_id, imagePath, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         Database::connect();
         $statement = Database::$pdo->prepare($sql);
         $statement->execute([
@@ -73,14 +124,15 @@ class Product
             $this->price,
             $this->status,
             $this->category_id,
-            $this->image
+            $this->image,
+            $this->user_id
         ]);
         return $statement->rowCount() > 0;
     }
 
     public function update() : bool
     {
-        $sql = "UPDATE products SET name = ?, description = ?, price = ?, status = ?, category_id = ?, image = ? WHERE id = ?";
+        $sql = "UPDATE products SET name = ?, description = ?, price = ?, status = ?, image = ? WHERE id = ?";
         Database::connect();
         $statement = Database::$pdo->prepare($sql);
         $statement->execute([
@@ -88,7 +140,6 @@ class Product
             $this->description,
             $this->price,
             $this->status,
-            $this->category_id,
             $this->image,
             $this->id
         ]);
@@ -106,7 +157,7 @@ class Product
         return $statement->rowCount() > 0;
     }
 
-    public function setProductDataFromPost()
+    /*public function setProductDataFromPost()
     {
         $condition = isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description']) && isset($_POST['price']) && isset($_POST['status']) && isset($_POST['category_id']);
         if (!$condition){
@@ -132,6 +183,6 @@ class Product
             $this->id = $_POST['id'];
             return true;
         }
-    }
+    }*/
 
 }

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Marketplace CRUD App</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/app.css">
 

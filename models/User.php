@@ -162,9 +162,7 @@ class User
             return false;
 
         } else {
-            return $password === $user['password'];
-//            TODO: uncomment the line below and comment the line above, restore the password_verify() function
-            //return password_verify($password, $user['password']);
+            return password_verify($password, $user['password']);
         }
     }
 

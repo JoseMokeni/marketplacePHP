@@ -19,7 +19,17 @@ class Router
         $this->postRoutes[$url] = $fn;
     }
     public function resolve(){
+//        $url = $_SERVER['REQUEST_URI'] ?? '/';
         $url = $_SERVER['REQUEST_URI'] ?? '/';
+//        delete the part after ? in the url
+        $position = strpos($url, '?');
+        if($position === false){
+            $url;
+        } else {
+            $url = substr($url, 0, $position);
+        }
+
+
         $method = $_SERVER['REQUEST_METHOD'];
         if($method === 'GET'){
             $fn = $this->getRoutes[$url] ?? null;
@@ -40,7 +50,7 @@ class Router
         echo "<script>console.log('params: $paramsString')</script>";
         foreach($params as $key => $value){
             $$key = $value;
-            echo "<script>console.log('key: $key, value: $value')</script>";
+
         }
         ob_start();
 

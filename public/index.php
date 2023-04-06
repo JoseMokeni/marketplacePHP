@@ -24,11 +24,12 @@
 
     //user routes
     $router->get('/users', [new UserController(), 'index']);
-    $router->get('/users/create', [new UserController(), 'create']);
-    $router->post('/users/create', [new UserController(), 'create']);
+    $router->get('/users/products', [new ProductController(), 'userProducts']);
+    /*$router->get('/users/create', [new UserController(), 'create']);
+    $router->post('/users/create', [new UserController(), 'create']);*/
     $router->get('/users/update', [new UserController(), 'update']);
-    $router->post('/users/update', [new UserController(), 'update']);
-    $router->post('/users/delete', [new UserController(), 'delete']);
+    /*$router->post('/users/update', [new UserController(), 'update']);
+    $router->post('/users/delete', [new UserController(), 'delete']);*/
     $router->get('/users/deactivate', [new UserController(), 'deactivate']);
     $router->post('/users/deactivate', [new UserController(), 'deactivate']);
     $router->get('/users/activate', [new UserController(), 'activate']);
@@ -47,6 +48,8 @@
     $router->get('/signup', [new AuthController(), 'signup']);
     $router->post('/signup', [new AuthController(), 'signup']);
     $router->get('/logout', [new AuthController(), 'logout']);
+
+    $router->get('/termsandconditions', [new AuthController(), 'termsandconditions']);
 
 
 
