@@ -120,12 +120,141 @@ class ProductController
 
     public function update($router)
     {
+        if (!isset($_GET['id'])) {
+            header('Location: /products');
+            exit;
+        }
+        $id = $_GET['id'];
+        $oldProductArray = Product::getOneById($id);
+        $categories = Product::getAllCategoriesIdAndNames();
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        AuthController::checkAuth();
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if (!Product::checkProductOwner($_SESSION['user']['id'], $_GET['id'])){
+                header('Location: /products');
+                exit;
+            }
+
+            $product = $oldProductArray;
+            $router->renderView('products/update', [
+                'product' => $product,
+                'categories' => $categories,
+            ]);
+            exit;
+        }
+        $product = new Product(
+            $id,
+            $_POST['name'],
+            $_POST['description'],
+            $_POST['price'],
+            $_POST['status'],
+            $_POST['category_id'],
+            $oldProductArray['user_id']
+        );
+//        check if image is present
+        var_dump($_FILES['image']['name']);
+        if (!empty($_FILES['image']['name'])) {
+            $image = $_FILES['image'];
+            if (!is_dir(__DIR__ . '/../public/images')) {
+                mkdir(__DIR__ . '/../public/images');
+            }
+
+            if (!is_dir(__DIR__ . '/../public/images/products')) {
+                mkdir(__DIR__ . '/../public/images/products');
+            }
+            $oldImg = __DIR__ . "/../public/" . $oldProductArray['imagePath'];
+
+
+            $product->image = 'images/products/' . UtilHelper::randomString(8) . '/' . $image['name'];
+            var_dump($product->image);
+            var_dump($oldProductArray['imagePath']);
+            mkdir(dirname(__DIR__ . "/../public/" . $product->image));
+            move_uploaded_file($image['tmp_name'], __DIR__ . "/../public/" . $product->image);
+//        check if image is present in the new folder
+            if (!file_exists(__DIR__ . "/../public/" . $product->image)) {
+                $product->image = $oldImg;
+                $router->renderView('products/update', [
+                    'errors' => ["Something went wrong"],
+                    'product' => $oldProductArray,
+                    'categories' => $categories,
+                ]);
+                exit;
+            }
+            //            delete old image and its folder
+            if (file_exists($oldImg)) {
+                unlink($oldImg);
+                rmdir(dirname($oldImg));
+            }
+            $updated = $product->update();
+            if ($updated) {
+                header('Location: /users/products');
+                exit;
+            } else {
+                $router->renderView('products/update', [
+                    'errors' => ["Something went wrong"]
+                ]);
+            }
+
+        } else {
+            $product->image = $oldProductArray['imagePath'];
+            $updated = $product->update();
+            if ($updated) {
+                header('Location: /users/products');
+                exit;
+            } else {
+                $router->renderView('products/update', [
+                    'errors' => ["Something went wrong"],
+                    'product' => $oldProductArray,
+                    'categories' => $categories,
+                ]);
+            }
+        }
         $router->renderView('products/update');
     }
 
     public function delete()
     {
-        echo 'ProductController::delete()';
+        if (!isset($_GET['id'])) {
+            header('Location: /products');
+            exit;
+        }
+        $id = $_GET['id'];
+        $oldProductArray = Product::getOneById($id);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        AuthController::checkAuth();
+        if (!Product::checkProductOwner($_SESSION['user']['id'], $_GET['id'])){
+            echo "<script>alert('You are not the owner of this product!')</script>";
+            header('Location: /products');
+            exit;
+        }
+        $product = new Product(
+            $id
+        );
+        $oldImg = __DIR__ . "/../public/" . $oldProductArray['imagePath'];
+        $deleted = $product->delete();
+//        ask user confirmation
+
+        if ($deleted) {
+            if (file_exists($oldImg)) {
+                unlink($oldImg);
+                rmdir(dirname($oldImg));
+            }
+            echo "<script>alert('Product deleted successfully!')</script>";
+            header('Location: /users/products');
+            exit;
+        } else {
+            echo "<script>alert('Something went wrong!')</script>";
+            header('Location: /users/products');
+            exit;
+        }
+
+
+
     }
 
 

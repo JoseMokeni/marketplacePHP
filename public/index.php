@@ -19,17 +19,12 @@
     $router->post('/products/create', [new ProductController(), 'create']);
     $router->get('/products/update', [new ProductController(), 'update']);
     $router->post('/products/update', [new ProductController(), 'update']);
-    $router->post('/products/delete', [new ProductController(), 'delete']);
     $router->get('/products/delete', [new ProductController(), 'delete']);
 
     //user routes
     $router->get('/users', [new UserController(), 'index']);
     $router->get('/users/products', [new ProductController(), 'userProducts']);
-    /*$router->get('/users/create', [new UserController(), 'create']);
-    $router->post('/users/create', [new UserController(), 'create']);*/
     $router->get('/users/update', [new UserController(), 'update']);
-    /*$router->post('/users/update', [new UserController(), 'update']);
-    $router->post('/users/delete', [new UserController(), 'delete']);*/
     $router->get('/users/deactivate', [new UserController(), 'deactivate']);
     $router->post('/users/deactivate', [new UserController(), 'deactivate']);
     $router->get('/users/activate', [new UserController(), 'activate']);

@@ -72,8 +72,7 @@
         form.addEventListener('submit', function (event) {
             event.preventDefault();
             //check if the user has more than 16 years
-            // todo: uncomment this code when the age restriction is lifted
-            /*let dob = document.getElementById('dob').value;
+            let dob = document.getElementById('dob').value;
             let today = new Date();
             let birthDate = new Date(dob);
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -81,7 +80,7 @@
             if (age < 16) {
                 toastr.error("You must be at least 16 years old to sign up");
                 return;
-            }*/
+            }
 
             let password = document.getElementById('password').value;
             let confirmPassword = document.getElementById('confirm-password').value;

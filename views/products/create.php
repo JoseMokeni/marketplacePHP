@@ -64,5 +64,7 @@
         };
 
     </script>
-
+    <?php
+        include_once __DIR__ . '/../partials/_footer.php';
+    ?>
 </body>

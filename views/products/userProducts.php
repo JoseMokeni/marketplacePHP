@@ -20,7 +20,7 @@
         </div>
     </a>
     <?php foreach ($products as $product): ?>
-        <div class="w-[500px] max-w-sm bg-white border border-gray-200 rounded-lg flex-none shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="relative w-[500px] max-w-sm bg-white border border-gray-200 rounded-lg flex-none shadow dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
                 <img class="w-[100%] p-8 rounded-t-lg h-[350px] object-contain" src="/<?=$product['imagePath'] ?>" alt="product image" />
             </a>
@@ -41,6 +41,9 @@
                     <a href="/product?id=<?=$product['id'] ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Show details</a>
                 </div>
             </div>
+            <?php if (strtolower($product['status']) != "available") : ?>
+                <div class="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-bl-lg">Sold</div>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
 
@@ -60,4 +63,7 @@
     };
 
 </script>
+<?php
+include_once __DIR__ . '/../partials/_footer.php';
+?>
 </body>

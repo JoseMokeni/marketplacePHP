@@ -23,11 +23,23 @@
             if (isset($_SESSION['user']['id']) and $_SESSION['user']['id'] == $product['user_id']):
         ?>
             <div class="mt-5 flex md:mt-0 md:ml-4">
-            <span class="hidden sm:block">
-              <a href="/products/update?id=<?=$product['id'] ?>'" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Edit product details
-              </a>
-            </span>
+                <span class="hidden sm:block">
+                    <a href="/products/update?id=<?=$product['id'] ?>" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Edit product details
+                    </a>
+                </span>
+                <span class="hidden sm:block ml-2">
+                    <a href="/products/delete?id=<?=$product['id'] ?>" id="deleteBtn" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white  bg-red-600 hover:bg-red-500  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Delete product
+                    </a>
+                    <script>
+                        document.getElementById('deleteBtn').addEventListener('click', function (e) {
+                            if (!confirm('Are you sure you want to delete this product?')) {
+                                e.preventDefault();
+                            }
+                        });
+                    </script>
+                </span>
             </div>
         <?php endif; ?>
     </div>
@@ -64,6 +76,9 @@
         </div>
     </div>
 </div>
+<?php
+include_once __DIR__ . '/../partials/_footer.php';
+?>
 </body>
 
 

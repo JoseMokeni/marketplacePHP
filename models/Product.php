@@ -7,13 +7,13 @@ use app\Database;
 
 class Product
 {
-    private ?int $id;
-    private ?string $name;
-    private ?string $description;
-    private ?float $price;
-    private ?string $status;
-    private ?int $category_id;
-    private ?int $user_id;
+    public ?int $id;
+    public ?string $name;
+    public ?string $description;
+    public ?float $price;
+    public ?string $status;
+    public ?int $category_id;
+    public ?int $user_id;
     public ?string $image;
 
 
@@ -41,7 +41,7 @@ class Product
     {
 //        check if a keyword is set
         $keyword = $_GET['keyword'] ?? "";
-        $sql = "SELECT * FROM products WHERE name LIKE '%$keyword%'";
+        $sql = "SELECT * FROM products WHERE name LIKE '%$keyword%' ORDER BY dateCreated DESC LIMIT 10";
         Database::connect();
         $statement = Database::$pdo->prepare($sql);
         $statement->execute();
@@ -79,6 +79,7 @@ class Product
     {
 //        todo: add to database product owner
         $sql = "SELECT * FROM products WHERE id = $productId AND user_id = $userId";
+        //var_dump($sql);
         Database::connect();
         $statement = Database::$pdo->prepare($sql);
         $statement->execute();
@@ -132,7 +133,7 @@ class Product
 
     public function update() : bool
     {
-        $sql = "UPDATE products SET name = ?, description = ?, price = ?, status = ?, image = ? WHERE id = ?";
+        $sql = "UPDATE products SET name = ?, description = ?, price = ?, status = ?, imagePath = ? WHERE id = ?";
         Database::connect();
         $statement = Database::$pdo->prepare($sql);
         $statement->execute([
