@@ -39,6 +39,7 @@ class Product
 
     public static function getAll() : array
     {
+        // todo: implement show more
 //        check if a keyword is set
         $keyword = $_GET['keyword'] ?? "";
         $sql = "SELECT * FROM products WHERE name LIKE '%$keyword%' ORDER BY dateCreated DESC LIMIT 10";
@@ -158,32 +159,5 @@ class Product
         return $statement->rowCount() > 0;
     }
 
-    /*public function setProductDataFromPost()
-    {
-        $condition = isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description']) && isset($_POST['price']) && isset($_POST['status']) && isset($_POST['category_id']);
-        if (!$condition){
-            return false;
-        } else {
-            $this->id = $_POST['id'];
-            $this->name = $_POST['name'];
-            $this->description = $_POST['description'];
-            $this->price = $_POST['price'];
-            $this->status = $_POST['status'];
-            $this->category_id = $_POST['category_id'];
-            $this->image = $_POST['image'] ?? "";
-            return true;
-        }
-    }
-
-    public function setIdFromPost()
-    {
-        $condition = isset($_POST['id']);
-        if (!$condition){
-            return false;
-        } else {
-            $this->id = $_POST['id'];
-            return true;
-        }
-    }*/
 
 }

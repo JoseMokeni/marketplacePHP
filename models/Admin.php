@@ -44,9 +44,8 @@ class Admin
         echo "<script>console.log('admin: " . json_encode($admin) . "')</script>";
         if ($admin) {
             //print the verification result to console
-            return $password === $admin['password'];
-//            TODO: uncomment the line below and comment the line above, restore the password_verify() function
-            //return password_verify($password, $admin['password']);
+
+            return password_verify($password, $admin['password']);
         } else {
             return false;
         }

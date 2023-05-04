@@ -11,6 +11,8 @@
 
     $router = new Router();
 
+//    var_dump(password_hash('admin', PASSWORD_DEFAULT));
+
     // main and product routes
     $router->get('/', [new ProductController(), 'index']);
     $router->get('/products', [new ProductController(), 'index']);
