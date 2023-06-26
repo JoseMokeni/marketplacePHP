@@ -11,6 +11,7 @@ password : admin
 ```
 
 Le script de création la base de données MySql se trouve dans le dossier principal du projet sous le nom de "database.sql".
+Il faudra aussi remplir les coordonnées de la base de données dans le fichier Database.sql.
 
 Merci d'avoir lu jusqu'ici!
 
